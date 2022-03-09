@@ -1,22 +1,29 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"os"
+	"strings"
 	"time"
 	"unicode"
 )
 
-var dictionary = []string{
-	"Zombie",
-	"Gopher",
-	"United States of America",
-	"Indonesia",
-	"Nazism",
-	"Apple",
-	"Programming",
-}
+var (
+	dictionary = []string{
+		"Zombie",
+		"Gopher",
+		"United States of America",
+		"Indonesia",
+		"Nazism",
+		"Apple",
+		"Programming",
+	}
+
+	inputReader = bufio.NewReader(os.Stdin)
+)
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
@@ -24,7 +31,15 @@ func main() {
 	targetWord := getRandomWord()
 	guessedLetters := initGuessedWords(targetWord)
 	hangmanState := 0
-	pringGameState(targetWord, guessedLetters, hangmanState)
+
+	for {
+		pringGameState(targetWord, guessedLetters, hangmanState)
+		input := readInput()
+		if len(input) != 1 {
+			fmt.Println("Invalid input. Please use only letters")
+			continue
+		}
+	}
 
 }
 
@@ -67,4 +82,13 @@ func getHangmanDrawing(hangmanState int) string {
 	}
 
 	return string(data)
+}
+func readInput() string {
+	fmt.Print("> ")
+	input, err := inputReader.ReadString('\n')
+	if err != nil {
+		panic(err)
+	}
+
+	return strings.TrimSpace(input)
 }
