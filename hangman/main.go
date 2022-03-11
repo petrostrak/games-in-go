@@ -32,7 +32,7 @@ func main() {
 	guessedLetters := initGuessedWords(targetWord)
 	hangmanState := 0
 
-	for !isWordGuessed(targetWord, guessedLetters) && !isHangmanComplete(hangmanState) {
+	for !isGameOver(targetWord, guessedLetters, hangmanState) {
 		pringGameState(targetWord, guessedLetters, hangmanState)
 		input := readInput()
 		if len(input) != 1 {
@@ -46,6 +46,16 @@ func main() {
 		} else {
 			hangmanState++
 		}
+	}
+
+	fmt.Print("Game Over.")
+
+	if isWordGuessed(targetWord, guessedLetters) {
+		fmt.Println("You win!")
+	} else if isHangmanComplete(hangmanState) {
+		fmt.Println("You lose!")
+	} else {
+		panic("invalid state.Game is over and there is no winner")
 	}
 
 }
@@ -116,4 +126,8 @@ func readInput() string {
 
 func isCorrectGuess(targetWord string, letter rune) bool {
 	return strings.ContainsRune(targetWord, letter)
+}
+
+func isGameOver(targetWord string, guessedLetters map[rune]bool, hangmanState int) bool {
+	return isWordGuessed(targetWord, guessedLetters) || isHangmanComplete(hangmanState)
 }
