@@ -70,7 +70,7 @@ func initGuessedWords(targetWord string) map[rune]bool {
 
 func isWordGuessed(targetWord string, guessedLetters map[rune]bool) bool {
 	for _, ch := range targetWord {
-		if !guessedLetters[ch] {
+		if !guessedLetters[unicode.ToLower(ch)] {
 			return false
 		}
 	}
