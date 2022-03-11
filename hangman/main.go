@@ -33,7 +33,7 @@ func main() {
 	hangmanState := 0
 
 	for !isGameOver(targetWord, guessedLetters, hangmanState) {
-		pringGameState(targetWord, guessedLetters, hangmanState)
+		printGameState(targetWord, guessedLetters, hangmanState)
 		input := readInput()
 		if len(input) != 1 {
 			fmt.Println("Invalid input. Please use only letters")
@@ -48,6 +48,7 @@ func main() {
 		}
 	}
 
+	printGameState(targetWord, guessedLetters, hangmanState)
 	fmt.Print("Game Over.")
 
 	if isWordGuessed(targetWord, guessedLetters) {
@@ -86,7 +87,7 @@ func getRandomWord() string {
 	return dictionary[rand.Intn(len(dictionary))]
 }
 
-func pringGameState(targetWord string, guessedLetters map[rune]bool, hangmanState int) {
+func printGameState(targetWord string, guessedLetters map[rune]bool, hangmanState int) {
 	fmt.Println(getWordGuessingProgess(targetWord, guessedLetters))
 	fmt.Println(getHangmanDrawing(hangmanState))
 }
