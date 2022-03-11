@@ -32,7 +32,7 @@ func main() {
 	guessedLetters := initGuessedWords(targetWord)
 	hangmanState := 0
 
-	for {
+	for !isWordGuessed(targetWord, guessedLetters) && !isHangmanComplete(hangmanState) {
 		pringGameState(targetWord, guessedLetters, hangmanState)
 		input := readInput()
 		if len(input) != 1 {
@@ -56,6 +56,20 @@ func initGuessedWords(targetWord string) map[rune]bool {
 	guessedLetters[unicode.ToLower(rune(targetWord[len(targetWord)-1]))] = true
 
 	return guessedLetters
+}
+
+func isWordGuessed(targetWord string, guessedLetters map[rune]bool) bool {
+	for _, ch := range targetWord {
+		if !guessedLetters[ch] {
+			return false
+		}
+	}
+
+	return true
+}
+
+func isHangmanComplete(hangmanState int) bool {
+	return hangmanState >= 9
 }
 
 func getRandomWord() string {
