@@ -7,9 +7,9 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func emitStr(s tcell.Screen, x, y int, style tcell.Style, str string) {
+func emitStr(s tcell.Screen, x, y int, str string) {
 	for _, c := range str {
-		s.SetContent(x, y, c, nil, style)
+		s.SetContent(x, y, c, nil, tcell.StyleDefault)
 		x += 1
 	}
 }
@@ -17,9 +17,7 @@ func emitStr(s tcell.Screen, x, y int, style tcell.Style, str string) {
 func displayHelloWorld(screen tcell.Screen) {
 	w, h := screen.Size()
 	screen.Clear()
-	style := tcell.StyleDefault.Foreground(tcell.ColorBlack.TrueColor()).Background(tcell.ColorWhite)
-	emitStr(screen, w/2-7, h/2, style, "Hello, World!")
-	emitStr(screen, w/2-9, h/2+1, tcell.StyleDefault, "Press ESC to exit.")
+	emitStr(screen, w/2-7, h/2, "Hello, World!")
 	screen.Show()
 }
 
@@ -48,7 +46,7 @@ func main() {
 			screen.Sync()
 			displayHelloWorld(screen)
 		case *tcell.EventKey:
-			if ev.Key() == tcell.KeyEscape {
+			if ev.Key() == tcell.KeyEnter {
 				screen.Fini()
 				os.Exit(0)
 			}
