@@ -5,63 +5,51 @@ import (
 	"os"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/gdamore/tcell/v2/encoding"
-
-	"github.com/mattn/go-runewidth"
 )
 
 func emitStr(s tcell.Screen, x, y int, style tcell.Style, str string) {
 	for _, c := range str {
-		var comb []rune
-		w := runewidth.RuneWidth(c)
-		if w == 0 {
-			comb = []rune{c}
-			c = ' '
-			w = 1
-		}
-		s.SetContent(x, y, c, comb, style)
-		x += w
+		s.SetContent(x, y, c, nil, style)
+		x += 1
 	}
 }
 
-func displayHelloWorld(s tcell.Screen) {
-	w, h := s.Size()
-	s.Clear()
+func displayHelloWorld(screen tcell.Screen) {
+	w, h := screen.Size()
+	screen.Clear()
 	style := tcell.StyleDefault.Foreground(tcell.ColorBlack.TrueColor()).Background(tcell.ColorWhite)
-	emitStr(s, w/2-7, h/2, style, "Hello, World!")
-	emitStr(s, w/2-9, h/2+1, tcell.StyleDefault, "Press ESC to exit.")
-	s.Show()
+	emitStr(screen, w/2-7, h/2, style, "Hello, World!")
+	emitStr(screen, w/2-9, h/2+1, tcell.StyleDefault, "Press ESC to exit.")
+	screen.Show()
 }
 
 // This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
-	encoding.Register()
-
-	s, e := tcell.NewScreen()
-	if e != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", e)
+	screen, err := tcell.NewScreen()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
-	if e := s.Init(); e != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", e)
+	if err := screen.Init(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
 	defStyle := tcell.StyleDefault.
 		Background(tcell.ColorBlack).
 		Foreground(tcell.ColorWhite)
-	s.SetStyle(defStyle)
+	screen.SetStyle(defStyle)
 
-	displayHelloWorld(s)
+	displayHelloWorld(screen)
 
 	for {
-		switch ev := s.PollEvent().(type) {
+		switch ev := screen.PollEvent().(type) {
 		case *tcell.EventResize:
-			s.Sync()
-			displayHelloWorld(s)
+			screen.Sync()
+			displayHelloWorld(screen)
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyEscape {
-				s.Fini()
+				screen.Fini()
 				os.Exit(0)
 			}
 		}
