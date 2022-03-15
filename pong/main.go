@@ -7,6 +7,25 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
+func initScreen() tcell.Screen {
+	screen, err := tcell.NewScreen()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+	if err := screen.Init(); err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+
+	defStyle := tcell.StyleDefault.
+		Background(tcell.ColorBlack).
+		Foreground(tcell.ColorWhite)
+	screen.SetStyle(defStyle)
+
+	return screen
+}
+
 func PrintString(s tcell.Screen, row, col int, str string) {
 	for _, c := range str {
 		s.SetContent(col, row, c, nil, tcell.StyleDefault)
@@ -23,21 +42,7 @@ func displayHelloWorld(screen tcell.Screen) {
 
 // This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
-	screen, err := tcell.NewScreen()
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-	if err := screen.Init(); err != nil {
-		fmt.Fprintf(os.Stderr, "%v\n", err)
-		os.Exit(1)
-	}
-
-	defStyle := tcell.StyleDefault.
-		Background(tcell.ColorBlack).
-		Foreground(tcell.ColorWhite)
-	screen.SetStyle(defStyle)
-
+	screen := initScreen()
 	displayHelloWorld(screen)
 
 	for {
