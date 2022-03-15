@@ -7,17 +7,17 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func emitStr(s tcell.Screen, x, y int, str string) {
+func PrintString(s tcell.Screen, row, col int, str string) {
 	for _, c := range str {
-		s.SetContent(x, y, c, nil, tcell.StyleDefault)
-		x += 1
+		s.SetContent(col, row, c, nil, tcell.StyleDefault)
+		col += 1
 	}
 }
 
 func displayHelloWorld(screen tcell.Screen) {
 	w, h := screen.Size()
 	screen.Clear()
-	emitStr(screen, w/2-7, h/2, "Hello, World!")
+	PrintString(screen, w/2-7, h/2, "Hello, World!")
 	screen.Show()
 }
 
