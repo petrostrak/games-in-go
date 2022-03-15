@@ -26,17 +26,18 @@ func initScreen() tcell.Screen {
 	return screen
 }
 
-func PrintString(s tcell.Screen, row, col int, str string) {
-	for _, c := range str {
-		s.SetContent(col, row, c, nil, tcell.StyleDefault)
-		col += 1
+func Print(s tcell.Screen, row, col, width, height int, ch rune) {
+	for r := 0; r < height; r++ {
+		for c := 0; c < width; c++ {
+			s.SetContent(col+c, row+r, ch, nil, tcell.StyleDefault)
+		}
 	}
 }
 
 func displayHelloWorld(screen tcell.Screen) {
-	w, h := screen.Size()
 	screen.Clear()
-	PrintString(screen, w/2-7, h/2, "Hello, World!")
+	Print(screen, 0, 0, 5, 5, '*')
+	// Print(screen, w/2-7, h/2, "Hello, World!")
 	screen.Show()
 }
 
