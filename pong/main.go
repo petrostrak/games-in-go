@@ -7,6 +7,11 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
+const (
+	PaddleHeight = 4
+	PaddleSymbol = 0x2588
+)
+
 func initScreen() tcell.Screen {
 	screen, err := tcell.NewScreen()
 	if err != nil {
@@ -34,23 +39,25 @@ func Print(s tcell.Screen, row, col, width, height int, ch rune) {
 	}
 }
 
-func displayHelloWorld(screen tcell.Screen) {
+func displayPaddles(screen tcell.Screen) {
 	screen.Clear()
-	Print(screen, 0, 0, 5, 5, '*')
-	// Print(screen, w/2-7, h/2, "Hello, World!")
+	width, height := screen.Size()
+	paddleStart := height/2 - PaddleHeight/2
+	Print(screen, paddleStart, 0, 1, PaddleHeight, PaddleSymbol)
+	Print(screen, paddleStart, width-1, 1, PaddleHeight, PaddleSymbol)
 	screen.Show()
 }
 
 // This program just prints "Hello, World!".  Press ESC to exit.
 func main() {
 	screen := initScreen()
-	displayHelloWorld(screen)
+	displayPaddles(screen)
 
 	for {
 		switch ev := screen.PollEvent().(type) {
 		case *tcell.EventResize:
 			screen.Sync()
-			displayHelloWorld(screen)
+			displayPaddles(screen)
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyEnter {
 				screen.Fini()
