@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/gdamore/tcell/v2"
 )
@@ -64,25 +65,27 @@ func main() {
 
 	for {
 		DrawState()
+		time.Sleep(50 * time.Millisecond)
+		InitUserInput()
 
-		switch ev := screen.PollEvent().(type) {
-		case *tcell.EventResize:
-			screen.Sync()
-			DrawState()
-		case *tcell.EventKey:
-			if ev.Rune() == 'q' {
-				screen.Fini()
-				os.Exit(0)
-			} else if ev.Rune() == 'w' {
-				player1.row--
-			} else if ev.Rune() == 's' {
-				player1.row++
-			} else if ev.Key() == tcell.KeyUp {
-				player2.row--
-			} else if ev.Key() == tcell.KeyDown {
-				player2.row++
-			}
-		}
+		// switch ev := screen.PollEvent().(type) {
+		// case *tcell.EventResize:
+		// 	screen.Sync()
+		// 	DrawState()
+		// case *tcell.EventKey:
+		// 	if ev.Rune() == 'q' {
+		// 		screen.Fini()
+		// 		os.Exit(0)
+		// 	} else if ev.Rune() == 'w' {
+		// 		player1.row--
+		// 	} else if ev.Rune() == 's' {
+		// 		player1.row++
+		// 	} else if ev.Key() == tcell.KeyUp {
+		// 		player2.row--
+		// 	} else if ev.Key() == tcell.KeyDown {
+		// 		player2.row++
+		// 	}
+		// }
 	}
 }
 
@@ -103,4 +106,16 @@ func InitGameState() {
 		width:  1,
 		height: PaddleHeight,
 	}
+}
+
+func InitUserInput() {
+
+	go func() {
+		for {
+			switch screen.PollEvent().(type) {
+			case *tcell.EventKey:
+				// TODO:
+			}
+		}
+	}()
 }
