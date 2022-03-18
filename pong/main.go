@@ -76,16 +76,7 @@ func main() {
 		DrawState()
 		time.Sleep(50 * time.Millisecond)
 
-		var key string
-
-		// With the default case the program will no
-		// longer lock waiting for an input.
-		select {
-		case key = <-inputChan:
-		default:
-			key = ""
-		}
-
+		key := ReadInput(inputChan)
 		if key == "Rune[q]" {
 			screen.Fini()
 			os.Exit(1)
@@ -144,4 +135,18 @@ func InitUserInput() chan string {
 	}()
 
 	return inputChan
+}
+
+func ReadInput(inputChan chan string) string {
+	var key string
+
+	// With the default case the program will no
+	// longer lock waiting for an input.
+	select {
+	case key = <-inputChan:
+	default:
+		key = ""
+	}
+
+	return key
 }
