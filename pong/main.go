@@ -14,9 +14,10 @@ const (
 )
 
 var (
-	screen  tcell.Screen
-	player1 *Paddle
-	player2 *Paddle
+	screen   tcell.Screen
+	player1  *Paddle
+	player2  *Paddle
+	debugLog string
 )
 
 type Paddle struct {
@@ -49,8 +50,16 @@ func Print(row, col, width, height int, ch rune) {
 	}
 }
 
+func PrintString(row, col int, str string) {
+	for _, c := range str {
+		screen.SetContent(col, row, c, nil, tcell.StyleDefault)
+		col += 1
+	}
+}
+
 func DrawState() {
 	screen.Clear()
+	PrintString(0, 0, debugLog)
 	Print(player1.row, player1.col, player1.width, player1.height, PaddleSymbol)
 	Print(player2.row, player2.col, player2.width, player2.height, PaddleSymbol)
 	screen.Show()
@@ -112,9 +121,9 @@ func InitUserInput() {
 
 	go func() {
 		for {
-			switch screen.PollEvent().(type) {
+			switch ev := screen.PollEvent().(type) {
 			case *tcell.EventKey:
-				// TODO:
+				debugLog = ev.Name()
 			}
 		}
 	}()
