@@ -75,8 +75,13 @@ func main() {
 	for {
 		DrawState()
 		time.Sleep(50 * time.Millisecond)
-		InitUserInput()
+		inputChan := InitUserInput()
 
+		key := <-inputChan
+		if key == "Rune[q]" {
+			screen.Fini()
+			os.Exit(1)
+		}
 		// switch ev := screen.PollEvent().(type) {
 		// case *tcell.EventResize:
 		// 	screen.Sync()
@@ -117,14 +122,18 @@ func InitGameState() {
 	}
 }
 
-func InitUserInput() {
+func InitUserInput() chan string {
+
+	inputChan := make(chan string)
 
 	go func() {
 		for {
 			switch ev := screen.PollEvent().(type) {
 			case *tcell.EventKey:
-				debugLog = ev.Name()
+				inputChan <- ev.Name()
 			}
 		}
 	}()
+
+	return inputChan
 }
