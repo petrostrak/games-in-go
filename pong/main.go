@@ -69,15 +69,23 @@ func DrawState() {
 func main() {
 	initScreen()
 	InitGameState()
-
+	inputChan := InitUserInput()
 	DrawState()
 
 	for {
 		DrawState()
 		time.Sleep(50 * time.Millisecond)
-		inputChan := InitUserInput()
 
-		key := <-inputChan
+		var key string
+
+		// With the default case the program will no
+		// longer lock waiting for an input.
+		select {
+		case key = <-inputChan:
+		default:
+			key = ""
+		}
+
 		if key == "Rune[q]" {
 			screen.Fini()
 			os.Exit(1)
