@@ -80,25 +80,15 @@ func main() {
 		if key == "Rune[q]" {
 			screen.Fini()
 			os.Exit(1)
+		} else if key == "Rune[w]" {
+			player1.row--
+		} else if key == "Rune[s]" {
+			player1.row++
+		} else if key == "Up" {
+			player2.row--
+		} else if key == "Down" {
+			player2.row++
 		}
-		// switch ev := screen.PollEvent().(type) {
-		// case *tcell.EventResize:
-		// 	screen.Sync()
-		// 	DrawState()
-		// case *tcell.EventKey:
-		// 	if ev.Rune() == 'q' {
-		// 		screen.Fini()
-		// 		os.Exit(0)
-		// 	} else if ev.Rune() == 'w' {
-		// 		player1.row--
-		// 	} else if ev.Rune() == 's' {
-		// 		player1.row++
-		// 	} else if ev.Key() == tcell.KeyUp {
-		// 		player2.row--
-		// 	} else if ev.Key() == tcell.KeyDown {
-		// 		player2.row++
-		// 	}
-		// }
 	}
 }
 
