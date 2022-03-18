@@ -77,18 +77,7 @@ func main() {
 		time.Sleep(50 * time.Millisecond)
 
 		key := ReadInput(inputChan)
-		if key == "Rune[q]" {
-			screen.Fini()
-			os.Exit(1)
-		} else if key == "Rune[w]" {
-			player1.row--
-		} else if key == "Rune[s]" {
-			player1.row++
-		} else if key == "Up" {
-			player2.row--
-		} else if key == "Down" {
-			player2.row++
-		}
+		HandleUserInput(key)
 	}
 }
 
@@ -139,4 +128,20 @@ func ReadInput(inputChan chan string) string {
 	}
 
 	return key
+}
+
+func HandleUserInput(key string) {
+	_, height := screen.Size()
+	if key == "Rune[q]" {
+		screen.Fini()
+		os.Exit(1)
+	} else if key == "Rune[w]" && player1.row > 0 {
+		player1.row--
+	} else if key == "Rune[s]" && player1.row+player1.height < height {
+		player1.row++
+	} else if key == "Up" && player2.row > 0 {
+		player2.row--
+	} else if key == "Down" && player2.row+player2.height < height {
+		player2.row++
+	}
 }
