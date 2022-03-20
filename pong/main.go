@@ -9,9 +9,11 @@ import (
 )
 
 const (
-	PaddleHeight = 4
-	PaddleSymbol = 0x2588
-	BallSymbol   = 0x25CF
+	PaddleHeight           = 4
+	PaddleSymbol           = 0x2588
+	BallSymbol             = 0x25CF
+	InitialBallVelocityRow = 1
+	InitialBallVelocityCol = 1
 )
 
 var (
@@ -26,6 +28,7 @@ var (
 type GameObject struct {
 	row, col, width, height int
 	symbol                  rune
+	velRow, velCol          int
 }
 
 func initScreen() {
@@ -97,6 +100,8 @@ func InitGameState() {
 		width:  1,
 		height: PaddleHeight,
 		symbol: PaddleSymbol,
+		velRow: 0,
+		velCol: 0,
 	}
 
 	playerPaddle2 = &GameObject{
@@ -105,6 +110,8 @@ func InitGameState() {
 		width:  1,
 		height: PaddleHeight,
 		symbol: PaddleSymbol,
+		velRow: 0,
+		velCol: 0,
 	}
 
 	ball = &GameObject{
