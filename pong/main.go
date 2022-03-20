@@ -13,7 +13,7 @@ const (
 	PaddleSymbol           = 0x2588
 	BallSymbol             = 0x25CF
 	InitialBallVelocityRow = 1
-	InitialBallVelocityCol = 1
+	InitialBallVelocityCol = 2
 )
 
 var (
@@ -82,11 +82,11 @@ func main() {
 	DrawState()
 
 	for {
+		HandleUserInput(ReadInput(inputChan))
+		UpdateState()
 		DrawState()
-		time.Sleep(50 * time.Millisecond)
 
-		key := ReadInput(inputChan)
-		HandleUserInput(key)
+		time.Sleep(75 * time.Millisecond)
 	}
 }
 
@@ -120,6 +120,8 @@ func InitGameState() {
 		width:  1,
 		height: 1,
 		symbol: BallSymbol,
+		velRow: InitialBallVelocityRow,
+		velCol: InitialBallVelocityCol,
 	}
 
 	GameObjects = []*GameObject{
@@ -177,5 +179,12 @@ func HandleUserInput(key string) {
 		playerPaddle2.row--
 	} else if key == "Down" && checkBottomBoundry(height, playerPaddle2) {
 		playerPaddle2.row++
+	}
+}
+
+func UpdateState() {
+	for i := range GameObjects {
+		GameObjects[i].row += GameObjects[i].velRow
+		GameObjects[i].col += GameObjects[i].velCol
 	}
 }
