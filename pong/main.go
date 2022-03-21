@@ -187,6 +187,10 @@ func UpdateState() {
 		GameObjects[i].row += GameObjects[i].velRow
 		GameObjects[i].col += GameObjects[i].velCol
 	}
+
+	if CollidesWithWall(ball) {
+		ball.velRow = -ball.velRow
+	}
 }
 
 func CollidesWithWall(obj *GameObject) bool {
