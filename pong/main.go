@@ -203,5 +203,12 @@ func CollidesWithWall(obj *GameObject) bool {
 }
 
 func CollidesWithPaddle(ball, paddle *GameObject) bool {
-	return ball.col+ball.velCol == paddle.col && ball.row+ball.velRow >= paddle.row && ball.row+ball.velRow < paddle.row+paddle.height
+	var collidesOnColumn bool
+	if ball.col < paddle.col {
+		collidesOnColumn = ball.col+ball.velCol >= paddle.col
+	} else {
+		collidesOnColumn = ball.col+ball.velCol <= paddle.col
+	}
+
+	return collidesOnColumn && ball.row+ball.velRow >= paddle.row && ball.row+ball.velRow < paddle.row+paddle.height
 }
