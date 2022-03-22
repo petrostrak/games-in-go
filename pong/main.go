@@ -23,6 +23,7 @@ var (
 	debugLog      string
 	ball          *GameObject
 	GameObjects   []*GameObject
+	isGamePaused  bool
 )
 
 type GameObject struct {
@@ -65,6 +66,11 @@ func PrintString(row, col int, str string) {
 }
 
 func DrawState() {
+
+	if isGamePaused {
+		return
+	}
+
 	screen.Clear()
 	PrintString(0, 0, debugLog)
 
@@ -179,10 +185,17 @@ func HandleUserInput(key string) {
 		playerPaddle2.row--
 	} else if key == "Down" && checkBottomBoundry(height, playerPaddle2) {
 		playerPaddle2.row++
+	} else if key == "Rune[p]" {
+		isGamePaused = !isGamePaused
 	}
 }
 
 func UpdateState() {
+
+	if isGamePaused {
+		return
+	}
+
 	for i := range GameObjects {
 		GameObjects[i].row += GameObjects[i].velRow
 		GameObjects[i].col += GameObjects[i].velCol
