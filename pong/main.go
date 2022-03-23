@@ -97,10 +97,11 @@ func main() {
 
 	sWidth, sHeight := screen.Size()
 	winner := GetWinner()
-	PrintString(sHeight/2-1, sWidth/2, "GameOver!")
-	PrintString(sHeight/2, sWidth/2, fmt.Sprintf("%s wins!\n", winner))
+	PrintStringCentered(sHeight/2-1, sWidth/2, "GameOver!")
+	PrintStringCentered(sHeight/2, sWidth/2, fmt.Sprintf("%s wins!\n", winner))
 	screen.Show()
 	time.Sleep(3 * time.Second)
+	screen.Fini()
 }
 
 func InitGameState() {
@@ -249,4 +250,9 @@ func GetWinner() string {
 	} else {
 		return ""
 	}
+}
+
+func PrintStringCentered(row, col int, s string) {
+	col = col - len(s)/2
+	PrintString(row, col, s)
 }
