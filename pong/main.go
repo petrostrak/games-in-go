@@ -98,7 +98,9 @@ func main() {
 	sWidth, sHeight := screen.Size()
 	winner := GetWinner()
 	PrintString(sHeight/2-1, sWidth/2, "GameOver!")
-	PrintString(sHeight/2, sWidth/2, fmt.Sprintf("%s wins!", winner))
+	PrintString(sHeight/2, sWidth/2, fmt.Sprintf("%s wins!\n", winner))
+	screen.Show()
+	time.Sleep(3 * time.Second)
 }
 
 func InitGameState() {
@@ -241,9 +243,9 @@ func GetWinner() string {
 	sWidth, _ := screen.Size()
 
 	if ball.col < 0 {
-		return "Player 1"
-	} else if ball.col >= sWidth {
 		return "Player 2"
+	} else if ball.col >= sWidth {
+		return "Player 1"
 	} else {
 		return ""
 	}
