@@ -87,7 +87,7 @@ func main() {
 	inputChan := InitUserInput()
 	DrawState()
 
-	for {
+	for !IsGameOver() {
 		HandleUserInput(ReadInput(inputChan))
 		UpdateState()
 		DrawState()
@@ -226,4 +226,9 @@ func CollidesWithPaddle(ball, paddle *GameObject) bool {
 	return collidesOnColumn &&
 		ball.row >= paddle.row &&
 		ball.row < paddle.row+paddle.height
+}
+
+func IsGameOver() bool {
+	_, screenHeight := screen.Size()
+	return ball.col < 0 || ball.col >= screenHeight
 }
