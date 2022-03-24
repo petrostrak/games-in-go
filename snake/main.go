@@ -164,14 +164,21 @@ func PrintStringCentered(row, col int, s string) {
 	PrintString(row, col, s)
 }
 
+func PrintFilledRect(row, col, width, height int, ch rune) {
+	for r := 0; r < height; r++ {
+		for c := 0; c < width; c++ {
+			screen.SetContent(col+c, row+r, ch, nil, tcell.StyleDefault)
+		}
+	}
+}
+
 func PrintGameFrame() {
 	// get top-left of game frame (row, col)
 	sWidth, sHeight := screen.Size()
 	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
-
-	// calculate rectangle width and height
 	width, height := GameFrameWidth+2, GameFrameHeight+2
 
+	PrintFilledRect(row, col, width, height, GameFrameSymbol)
 	// Print an unfilled rectangle with the game
 	// frame width & height
 
