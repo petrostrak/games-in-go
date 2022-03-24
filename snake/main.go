@@ -193,8 +193,6 @@ func PrintGameFrame() {
 	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
 	width, height := GameFrameWidth+2, GameFrameHeight+2
 
-	PrintFilledRect(row, col, width, height, GameFrameSymbol)
-	// Print an unfilled rectangle with the game
-	// frame width & height
-
+	PrintUnfilledRect(row, col, width, height, GameFrameSymbol)
+	// PrintUnfilledRect(row+1, col+1, GameFrameWidth, GameFrameHeight, '*')
 }
