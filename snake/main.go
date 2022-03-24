@@ -170,6 +170,7 @@ func PrintGameFrame() {
 	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
 
 	// calculate rectangle width and height
+	width, height := GameFrameWidth+2, GameFrameHeight+2
 
 	// Print an unfilled rectangle with the game
 	// frame width & height
