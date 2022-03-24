@@ -163,3 +163,15 @@ func PrintStringCentered(row, col int, s string) {
 	col = col - len(s)/2
 	PrintString(row, col, s)
 }
+
+func PrintGameFrame() {
+	// get top-left of game frame (row, col)
+	sWidth, sHeight := screen.Size()
+	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
+
+	// calculate rectangle width and height
+
+	// Print an unfilled rectangle with the game
+	// frame width & height
+
+}
