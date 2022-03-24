@@ -172,6 +172,21 @@ func PrintFilledRect(row, col, width, height int, ch rune) {
 	}
 }
 
+func PrintUnfilledRect(row, col, width, height int, ch rune) {
+	for c := 0; c < width; c++ {
+		screen.SetContent(col+c, row, ch, nil, tcell.StyleDefault)
+	}
+
+	for r := 1; r < height-1; r++ {
+		screen.SetContent(col, row+r, ch, nil, tcell.StyleDefault)
+		screen.SetContent(col+width-1, row+r, ch, nil, tcell.StyleDefault)
+	}
+
+	for c := 0; c < width; c++ {
+		screen.SetContent(col+c, row+height-1, ch, nil, tcell.StyleDefault)
+	}
+}
+
 func PrintGameFrame() {
 	// get top-left of game frame (row, col)
 	sWidth, sHeight := screen.Size()
