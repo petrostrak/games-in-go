@@ -51,6 +51,7 @@ func DrawState() {
 
 	screen.Clear()
 	PrintString(0, 0, debugLog)
+	PrintGameFrame()
 
 	for _, obj := range GameObjects {
 		Print(obj.row, obj.col, obj.width, obj.height, obj.symbol)
@@ -144,4 +145,21 @@ func ReadInput(inputChan chan string) string {
 	}
 
 	return key
+}
+
+func checkTopBoundry(height int, player *GameObject) bool {
+	return player.row > 0
+}
+func checkBottomBoundry(height int, player *GameObject) bool {
+	return player.row+player.height < height
+}
+
+func CollidesWithWall(obj *GameObject) bool {
+	_, screenHeight := screen.Size()
+	return obj.row+obj.velRow < 0 || obj.row+obj.velRow >= screenHeight
+}
+
+func PrintStringCentered(row, col int, s string) {
+	col = col - len(s)/2
+	PrintString(row, col, s)
 }
