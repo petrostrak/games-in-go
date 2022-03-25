@@ -226,9 +226,8 @@ func PrintUnfilledRect(row, col, width, height int) {
 }
 
 func PrintGameFrame() {
-	// get top-left of game frame (row, col)
-	sWidth, sHeight := screen.Size()
-	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
+	gameFrameTopLeftRow, gameFrameTopLeftCol := GetGameFrameTopLeft()
+	row, col := gameFrameTopLeftRow-1, gameFrameTopLeftCol-1
 	width, height := GameFrameWidth+2, GameFrameHeight+2
 
 	PrintUnfilledRect(row, col, width, height)
@@ -236,9 +235,7 @@ func PrintGameFrame() {
 }
 
 func PrintFilledRectInGameFrame(row, col, width, height int, ch rune) {
-	// Get game frames top left point (row, col)
-	sWidth, sHeight := screen.Size()
-	r, c := sHeight/2-GameFrameHeight/2, sWidth/2-GameFrameWidth/2
+	r, c := GetGameFrameTopLeft()
 	PrintFilledRect(row+r, col+c, width, height, ch)
 }
 
@@ -250,4 +247,10 @@ func PrintSnake() {
 
 func PrintApple() {
 	PrintFilledRectInGameFrame(apple.point.row, apple.point.col, 1, 1, apple.symbol)
+}
+
+func GetGameFrameTopLeft() (int, int) {
+	// Get game frames top left point (row, col)
+	sWidth, sHeight := screen.Size()
+	return sHeight/2 - GameFrameHeight/2, sWidth/2 - GameFrameWidth/2
 }
