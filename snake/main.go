@@ -8,16 +8,18 @@ import (
 	"github.com/gdamore/tcell/v2"
 )
 
-const SnakeSymbol = '*'
-const AppleSymbol = 0x25CF
-const GameFrameWidth = 30
-const GameFrameHeight = 15
-const GameFrameSymbolHorizontal = '═'
-const GameFrameSymbolVertical = '║'
-const GameFrameSymbolTopLeft = '╔'
-const GameFrameSymbolTopRight = '╗'
-const GameFrameSymbolBottomLeft = '╚'
-const GameFrameSymbolBottomRight = '╝'
+const (
+	SnakeSymbol                = '*'
+	AppleSymbol                = 0x25CF
+	GameFrameWidth             = 30
+	GameFrameHeight            = 15
+	GameFrameSymbolHorizontal  = '═'
+	GameFrameSymbolVertical    = '║'
+	GameFrameSymbolTopLeft     = '╔'
+	GameFrameSymbolTopRight    = '╗'
+	GameFrameSymbolBottomLeft  = '╚'
+	GameFrameSymbolBottomRight = '╝'
+)
 
 type GameObject struct {
 	row, col, width, height int
