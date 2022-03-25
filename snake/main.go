@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	SnakeSymbol                = '*'
+	SnakeSymbol                = '█'
 	AppleSymbol                = 0x25CF
 	GameFrameWidth             = 30
 	GameFrameHeight            = 15
@@ -21,17 +21,27 @@ const (
 	GameFrameSymbolBottomRight = '╝'
 )
 
-type GameObject struct {
-	row, col, width, height int
-	velRow, velCol          int
-	symbol                  rune
+type Point struct {
+	row, col int
+}
+
+type Snake struct {
+	parts          []*Point
+	velRow, velCol int
+	symbol         rune
+}
+
+type Apple struct {
+	point  *Point
+	symbol rune
 }
 
 var (
 	screen       tcell.Screen
 	isGamePaused bool
 	debugLog     string
-	GameObjects  []*GameObject
+	snake        *Snake
+	apple        *Apple
 )
 
 func main() {
@@ -46,8 +56,6 @@ func main() {
 
 		time.Sleep(75 * time.Millisecond)
 	}
-
-	screen.Fini()
 }
 
 func DrawState() {
@@ -60,9 +68,9 @@ func DrawState() {
 	PrintString(0, 0, debugLog)
 	PrintGameFrame()
 
-	for _, obj := range GameObjects {
-		Print(obj.row, obj.col, obj.width, obj.height, obj.symbol)
-	}
+	PrintSnake()
+	PrintApple()
+
 	screen.Show()
 }
 
@@ -100,7 +108,26 @@ func initScreen() {
 }
 
 func InitGameState() {
+	snake = &Snake{
+		parts: []*Point{
+			{row: 5, col: 3},
+			{row: 6, col: 3},
+			{row: 7, col: 3},
+			{row: 8, col: 3},
+			{row: 9, col: 3},
+		},
+		velRow: -1,
+		velCol: 0,
+		symbol: SnakeSymbol,
+	}
 
+	apple = &Apple{
+		point: &Point{
+			row: 10,
+			col: 10,
+		},
+		symbol: AppleSymbol,
+	}
 }
 
 func UpdateState() {
@@ -109,11 +136,7 @@ func UpdateState() {
 		return
 	}
 
-	for i := range GameObjects {
-		GameObjects[i].row += GameObjects[i].velRow
-		GameObjects[i].col += GameObjects[i].velCol
-	}
-
+	// Update Snake + Apple
 }
 
 func InitUserInput() chan string {
@@ -152,18 +175,6 @@ func ReadInput(inputChan chan string) string {
 	}
 
 	return key
-}
-
-func checkTopBoundry(height int, player *GameObject) bool {
-	return player.row > 0
-}
-func checkBottomBoundry(height int, player *GameObject) bool {
-	return player.row+player.height < height
-}
-
-func CollidesWithWall(obj *GameObject) bool {
-	_, screenHeight := screen.Size()
-	return obj.row+obj.velRow < 0 || obj.row+obj.velRow >= screenHeight
 }
 
 func PrintStringCentered(row, col int, s string) {
@@ -222,4 +233,16 @@ func PrintGameFrame() {
 
 	PrintUnfilledRect(row, col, width, height)
 	// PrintUnfilledRect(row+1, col+1, GameFrameWidth, GameFrameHeight, '*')
+}
+
+func PrintSnake() {
+	for _, p := range snake.parts {
+		PrintFilledRect(p.row, p.col, 1, 1, snake.symbol)
+	}
+
+	PrintFilledRect(apple.point.row, apple.point.col, 1, 1, apple.symbol)
+}
+
+func PrintApple() {
+	PrintFilledRect(apple.point.row, apple.point.col, 1, 1, apple.symbol)
 }
