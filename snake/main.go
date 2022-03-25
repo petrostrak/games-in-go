@@ -235,14 +235,19 @@ func PrintGameFrame() {
 	// PrintUnfilledRect(row+1, col+1, GameFrameWidth, GameFrameHeight, '*')
 }
 
+func PrintFilledRectInGameFrame(row, col, width, height int, ch rune) {
+	// Get game frames top left point (row, col)
+	sWidth, sHeight := screen.Size()
+	r, c := sHeight/2-GameFrameHeight/2, sWidth/2-GameFrameWidth/2
+	PrintFilledRect(row+r, col+c, width, height, ch)
+}
+
 func PrintSnake() {
 	for _, p := range snake.parts {
-		PrintFilledRect(p.row, p.col, 1, 1, snake.symbol)
+		PrintFilledRectInGameFrame(p.row, p.col, 1, 1, snake.symbol)
 	}
-
-	PrintFilledRect(apple.point.row, apple.point.col, 1, 1, apple.symbol)
 }
 
 func PrintApple() {
-	PrintFilledRect(apple.point.row, apple.point.col, 1, 1, apple.symbol)
+	PrintFilledRectInGameFrame(apple.point.row, apple.point.col, 1, 1, apple.symbol)
 }
