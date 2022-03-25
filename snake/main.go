@@ -12,7 +12,12 @@ const SnakeSymbol = '*'
 const AppleSymbol = 0x25CF
 const GameFrameWidth = 30
 const GameFrameHeight = 15
-const GameFrameSymbol = '║'
+const GameFrameSymbolHorizontal = '═'
+const GameFrameSymbolVertical = '║'
+const GameFrameSymbolTopLeft = '╔'
+const GameFrameSymbolTopRight = '╗'
+const GameFrameSymbolBottomLeft = '╚'
+const GameFrameSymbolBottomRight = '╝'
 
 type GameObject struct {
 	row, col, width, height int
@@ -172,18 +177,38 @@ func PrintFilledRect(row, col, width, height int, ch rune) {
 	}
 }
 
-func PrintUnfilledRect(row, col, width, height int, ch rune) {
+func PrintUnfilledRect(row, col, width, height int) {
 	for c := 0; c < width; c++ {
-		screen.SetContent(col+c, row, ch, nil, tcell.StyleDefault)
+		if c == 0 {
+			screen.SetContent(col+c, row, GameFrameSymbolTopLeft, nil, tcell.StyleDefault)
+			continue
+		}
+
+		if c == width-1 {
+			screen.SetContent(col+c, row, GameFrameSymbolTopRight, nil, tcell.StyleDefault)
+			continue
+		}
+
+		screen.SetContent(col+c, row, GameFrameSymbolHorizontal, nil, tcell.StyleDefault)
 	}
 
 	for r := 1; r < height-1; r++ {
-		screen.SetContent(col, row+r, ch, nil, tcell.StyleDefault)
-		screen.SetContent(col+width-1, row+r, ch, nil, tcell.StyleDefault)
+		screen.SetContent(col, row+r, GameFrameSymbolVertical, nil, tcell.StyleDefault)
+		screen.SetContent(col+width-1, row+r, GameFrameSymbolVertical, nil, tcell.StyleDefault)
 	}
 
 	for c := 0; c < width; c++ {
-		screen.SetContent(col+c, row+height-1, ch, nil, tcell.StyleDefault)
+		if c == 0 {
+			screen.SetContent(col+c, row+height-1, GameFrameSymbolBottomLeft, nil, tcell.StyleDefault)
+			continue
+		}
+
+		if c == width-1 {
+			screen.SetContent(col+c, row+height-1, GameFrameSymbolBottomRight, nil, tcell.StyleDefault)
+			continue
+		}
+
+		screen.SetContent(col+c, row+height-1, GameFrameSymbolHorizontal, nil, tcell.StyleDefault)
 	}
 }
 
@@ -193,6 +218,6 @@ func PrintGameFrame() {
 	row, col := sHeight/2-GameFrameHeight/2-1, sWidth/2-GameFrameWidth/2-1
 	width, height := GameFrameWidth+2, GameFrameHeight+2
 
-	PrintUnfilledRect(row, col, width, height, GameFrameSymbol)
+	PrintUnfilledRect(row, col, width, height)
 	// PrintUnfilledRect(row+1, col+1, GameFrameWidth, GameFrameHeight, '*')
 }
