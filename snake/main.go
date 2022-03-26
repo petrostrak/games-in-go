@@ -176,7 +176,7 @@ func HandleUserInput(key string) {
 		screen.Fini()
 		os.Exit(1)
 	} else if key == "Rune[p]" {
-		isGamePaused = true
+		isGamePaused = !isGamePaused
 	} else if key == "Rune[w]" && snake.velRow != 1 {
 		snake.velRow = -1
 		snake.velCol = 0
