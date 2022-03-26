@@ -40,6 +40,7 @@ type Apple struct {
 var (
 	screen       tcell.Screen
 	isGamePaused bool
+	isGameOver   bool
 	debugLog     string
 	snake        *Snake
 	apple        *Apple
@@ -52,13 +53,16 @@ func main() {
 	InitGameState()
 	inputChan := InitUserInput()
 
-	for {
+	for !isGameOver {
 		HandleUserInput(ReadInput(inputChan))
 		UpdateState()
 		DrawState()
 
 		time.Sleep(75 * time.Millisecond)
 	}
+
+	time.Sleep(1 * time.Second)
+	screen.Fini()
 }
 
 func DrawState() {
@@ -166,6 +170,8 @@ func HandleUserInput(key string) {
 	if key == "Rune[q]" {
 		screen.Fini()
 		os.Exit(1)
+	} else if key == "Rune[p]" {
+		isGamePaused = true
 	} else if key == "Rune[w]" && snake.velRow != 1 {
 		snake.velRow = -1
 		snake.velCol = 0
@@ -289,6 +295,10 @@ func UpdateSnake() {
 		snake.parts = snake.parts[1:]
 	}
 
+	if IsOutSideGameFrame() {
+		isGameOver = true
+	}
+
 }
 
 func UpdateApple() {
@@ -305,4 +315,12 @@ func AppleIsInsideSnake() bool {
 	}
 
 	return false
+}
+
+func IsOutSideGameFrame() bool {
+	head := snake.parts[len(snake.parts)-1]
+	return head.row < 0 ||
+		head.row >= GameFrameHeight ||
+		head.col < 0 ||
+		head.col >= GameFrameWidth
 }
