@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
 
@@ -45,6 +46,8 @@ var (
 )
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
+
 	initScreen()
 	InitGameState()
 	inputChan := InitUserInput()
@@ -138,6 +141,8 @@ func UpdateState() {
 
 	// Update Snake + Apple
 	UpdateSnake()
+	UpdateApple()
+
 }
 
 func InitUserInput() chan string {
@@ -278,4 +283,20 @@ func UpdateSnake() {
 
 	// delete the last element
 	snake.parts = snake.parts[1:]
+}
+
+func UpdateApple() {
+	if AppleIsInsideSnake() {
+		apple.point.row, apple.point.col = rand.Intn(GameFrameHeight), rand.Intn(GameFrameWidth)
+	}
+}
+
+func AppleIsInsideSnake() bool {
+	for _, p := range snake.parts {
+		if p.row == apple.point.row && p.col == apple.point.col {
+			return true
+		}
+	}
+
+	return false
 }
