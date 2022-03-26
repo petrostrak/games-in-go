@@ -302,7 +302,7 @@ func UpdateSnake() {
 		score++
 	}
 
-	if IsOutSideGameFrame() {
+	if IsOutSideGameFrame() || IsEatingItself() {
 		isGameOver = true
 	}
 
@@ -330,4 +330,18 @@ func IsOutSideGameFrame() bool {
 		head.row >= GameFrameHeight ||
 		head.col < 0 ||
 		head.col >= GameFrameWidth
+}
+
+func IsEatingItself() bool {
+	head := snake.parts[len(snake.parts)-1]
+
+	// range through all snake parts except the last one which
+	// is the head.
+	for _, p := range snake.parts[:len(snake.parts)-1] {
+		if p.row == head.row && p.col == head.col {
+			return true
+		}
+	}
+
+	return false
 }
