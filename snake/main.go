@@ -281,8 +281,14 @@ func UpdateSnake() {
 		col: head.col + snake.velCol,
 	})
 
-	// delete the last element
-	snake.parts = snake.parts[1:]
+	// if the head of the snake is equal to the apple
+	// it means that the snake has eaten the apple. In
+	// that case we skip the deletion of the last element
+	// of the snake, making it longer.
+	if !AppleIsInsideSnake() {
+		snake.parts = snake.parts[1:]
+	}
+
 }
 
 func UpdateApple() {
