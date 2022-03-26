@@ -286,7 +286,7 @@ func GetGameFrameTopLeft() (int, int) {
 
 func UpdateSnake() {
 	// add a new element
-	head := snake.parts[len(snake.parts)-1]
+	head := GetSnakeHead()
 	snake.parts = append(snake.parts, &Point{
 		row: head.row + snake.velRow,
 		col: head.col + snake.velCol,
@@ -325,7 +325,7 @@ func AppleIsInsideSnake() bool {
 }
 
 func IsOutSideGameFrame() bool {
-	head := snake.parts[len(snake.parts)-1]
+	head := GetSnakeHead()
 	return head.row < 0 ||
 		head.row >= GameFrameHeight ||
 		head.col < 0 ||
@@ -333,15 +333,23 @@ func IsOutSideGameFrame() bool {
 }
 
 func IsEatingItself() bool {
-	head := snake.parts[len(snake.parts)-1]
+	head := GetSnakeHead()
 
 	// range through all snake parts except the last one which
 	// is the head.
-	for _, p := range snake.parts[:len(snake.parts)-1] {
+	for _, p := range snake.parts[:GetSnakeHeadIndex()] {
 		if p.row == head.row && p.col == head.col {
 			return true
 		}
 	}
 
 	return false
+}
+
+func GetSnakeHeadIndex() int {
+	return len(snake.parts) - 1
+}
+
+func GetSnakeHead() *Point {
+	return snake.parts[GetSnakeHeadIndex()]
 }
