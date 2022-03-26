@@ -137,6 +137,7 @@ func UpdateState() {
 	}
 
 	// Update Snake + Apple
+	UpdateSnake()
 }
 
 func InitUserInput() chan string {
@@ -253,4 +254,16 @@ func GetGameFrameTopLeft() (int, int) {
 	// Get game frames top left point (row, col)
 	sWidth, sHeight := screen.Size()
 	return sHeight/2 - GameFrameHeight/2, sWidth/2 - GameFrameWidth/2
+}
+
+func UpdateSnake() {
+	// add a new element
+	head := snake.parts[len(snake.parts)-1]
+	snake.parts = append(snake.parts, &Point{
+		row: head.row + snake.velRow,
+		col: head.col + snake.velCol,
+	})
+
+	// delete the last element
+	snake.parts = snake.parts[1:]
 }
