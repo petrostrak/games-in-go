@@ -157,10 +157,22 @@ func InitUserInput() chan string {
 }
 
 func HandleUserInput(key string) {
-	// _, height := screen.Size()
+	debugLog = key
 	if key == "Rune[q]" {
 		screen.Fini()
 		os.Exit(1)
+	} else if key == "Rune[w]" && snake.velRow != 1 {
+		snake.velRow = -1
+		snake.velCol = 0
+	} else if key == "Rune[a]" && snake.velCol != 1 {
+		snake.velRow = 0
+		snake.velCol = -1
+	} else if key == "Rune[s]" && snake.velRow != -1 {
+		snake.velRow = 1
+		snake.velCol = 0
+	} else if key == "Rune[d]" && snake.velCol != -1 {
+		snake.velRow = 0
+		snake.velCol = 1
 	}
 }
 
