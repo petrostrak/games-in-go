@@ -110,11 +110,11 @@ func initScreen() {
 func InitGameState() {
 	snake = &Snake{
 		parts: []*Point{
-			{row: 5, col: 3},
-			{row: 6, col: 3},
-			{row: 7, col: 3},
+			{row: 9, col: 3}, // head
 			{row: 8, col: 3},
-			{row: 9, col: 3},
+			{row: 7, col: 3},
+			{row: 6, col: 3},
+			{row: 5, col: 3}, // tail
 		},
 		velRow: -1,
 		velCol: 0,
