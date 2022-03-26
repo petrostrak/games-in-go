@@ -44,6 +44,7 @@ var (
 	debugLog     string
 	snake        *Snake
 	apple        *Apple
+	score        int
 )
 
 func main() {
@@ -61,7 +62,11 @@ func main() {
 		time.Sleep(75 * time.Millisecond)
 	}
 
-	time.Sleep(1 * time.Second)
+	sWidth, sHeight := screen.Size()
+	PrintStringCentered(sHeight/2, sWidth/2, "Game Over!")
+	PrintStringCentered(sHeight/2, sWidth/2, fmt.Sprintf("Your score is %d!", score))
+	screen.Show()
+	time.Sleep(2 * time.Second)
 	screen.Fini()
 }
 
@@ -293,6 +298,8 @@ func UpdateSnake() {
 	// of the snake, making it longer.
 	if !AppleIsInsideSnake() {
 		snake.parts = snake.parts[1:]
+	} else {
+		score++
 	}
 
 	if IsOutSideGameFrame() {
